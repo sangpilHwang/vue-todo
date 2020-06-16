@@ -1,31 +1,39 @@
 <template>
   <div>
-    <transition-group name="list" tag="ul">
-      <li v-for="(todoItem, index) in propsdata" class="shadow" v-bind:key="todoItem.item">
-        <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem, index)"></i>
-        <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-        <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
-          <i class="fas fa-trash-alt"></i>
-        </span>
-      </li>
-    </transition-group>
+      <ul>
+        
+        <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
+          <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
+          v-on:click="toggleComplete(todoItem, index)"></i>
+          <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
+          <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+            <i class="fas fa-trash-alt"></i>
+          </span>
+        </li>
+      </ul>
   </div>
 </template>
 
 <script>
 export default {
   props: ['propsdata'],
-  methods: {
-    removeTodo(todoItem, index) {
-      // console.log(todoItem, index);
-      this.$emit('removeItem', todoItem, index) //자식 컴포넌트에서 이벤트를 발신(emit)하고 부모 컴포넌트에서 v-on 디렉티브를 이용해 이벤트를 수신
+  
+  methods:{
+    removeTodo: function(todoItem, index){
+      console.log(todoItem, index);
+      localStorage.removeItem(todoItem);
+      this.todoItems.splice(index, 1); //splice 기존있는 배열을 지움
+      
     },
-    toggleComplete(todoItem, index) {
-      this.$emit('toggleItem', todoItem, index)
-    }
-  },
-  
-  
+  toggleComplete: function(todoItem, index){
+    todoItem.completed = !todoItem.completed;
+    localStorage.removeItem(todoItem.item);
+    localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    console.log(index);
+    
+  }   
+  }
+
 }
 </script>
 
@@ -50,6 +58,10 @@ li {
   color: #62acde;
   margin-right: 5px;
 }
+.removeBtn {
+  margin-left: auto;
+  color: #de4343;
+}
 .checkBtnCompleted {
   color: #b3adad;
 }
@@ -57,17 +69,5 @@ li {
   text-decoration: line-through;
   color: #b3adad;
 }
-.removeBtn {
-  margin-left: auto;
-  color: #de4343;
-}
 
-/*리스트 아이템 트랜지션 효과*/
-.list-enter-active, .list-leave-active {
-  transition: all 1s;
-}
-.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(30px);
-}
 </style>
