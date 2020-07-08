@@ -22,7 +22,7 @@ export default {
   methods: {
     addOneItem: function(todoItem){
     var obj = {completed: false, item: todoItem}
-    localStorage.setItem(this.newTodoItem,JSON.stringify(obj));
+    localStorage.setItem(this.newTodoItem,JSON.stringify(obj)); // JSON.stringify: 객체를 string화 해서 localStorage에 저장할 수 있도록 형 변환.
     this.todoItems.push(obj);
     }
   },
@@ -30,7 +30,7 @@ export default {
     if(localStorage.length > 0){
       for(var i = 0; i< localStorage.length; ++i){
         if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
-          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i)))); // JSON.parse: JSON.stringify를 통해 string화 했던 값을 data 형태로 형 변환.
         }
       }
     }
