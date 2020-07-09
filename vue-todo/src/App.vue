@@ -1,62 +1,28 @@
 <template>
   <div id="app">
-    <TodoHeader></TodoHeader>
-    <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems" v-on:removeItem=""></TodoList>
-    <TodoFooter></TodoFooter>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
-import TodoHeader from './components/TodoHeader.vue'
-import TodoInput from './components/TodoInput.vue'
-import TodoList from './components/TodoList.vue'
-import TodoFooter from './components/TodoFooter.vue'
+import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  data: function(){
-    return{
-      todoItems:[]
-    }
-  },
-  methods: {
-    addOneItem: function(todoItem){
-    var obj = {completed: false, item: todoItem}
-    localStorage.setItem(this.newTodoItem,JSON.stringify(obj)); // JSON.stringify: 객체를 string화 해서 localStorage에 저장할 수 있도록 형 변환.
-    this.todoItems.push(obj);
-    }
-  },
-  created: function(){
-    if(localStorage.length > 0){
-      for(var i = 0; i< localStorage.length; ++i){
-        if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
-          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i)))); // JSON.parse: JSON.stringify를 통해 string화 했던 값을 data 형태로 형 변환.
-        }
-      }
-    }
-  },
-  components:{
-    'TodoHeader':TodoHeader,
-    'TodoInput':TodoInput,
-    'TodoList':TodoList,
-    'TodoFooter':TodoFooter
+  name: 'App',
+  components: {
+    HelloWorld
   }
 }
 </script>
 
 <style>
-body{
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color: #F6F6F6;
-}
-input{
-  border-style: groove;
-  width: 200px;
-}
-button{
-  border-style: groove;
-}
-.shadow{
-  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
